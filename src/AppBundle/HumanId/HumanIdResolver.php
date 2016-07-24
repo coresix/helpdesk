@@ -7,7 +7,7 @@ use AppBundle\Entity\User\UserHumanIdProvider;
 use AppBundle\HumanId\EntityHumanIdProvider;
 use Doctrine\ORM\EntityManager;
 
-class HumanIdHelper
+class HumanIdResolver
 {
     const HUMAN_ID_REGEXP = '/^([A-Za-z]{3})\-([A-Za-z]{3})?\-([0-9]{1,9})$/';
 
