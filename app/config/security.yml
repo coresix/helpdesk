@@ -1,0 +1,35 @@
+security:
+
+    encoders:
+        AppBundle\Entity\User\User:
+            algorithm: bcrypt
+
+    firewalls:
+        main:
+            pattern: ^/
+            provider: orm
+            logout:
+                path:   auth_logout
+                target: /
+            anonymous:    true
+            form_login:
+                  default_target_path: /
+                  use_referer: true
+                  check_path: auth_check
+                  login_path: auth_login
+            remember_me:
+                  secret:   '%secret%'
+                  lifetime: 604800 # 1 week in seconds
+                  path:     /
+
+    providers:
+            orm:
+                entity:
+                    class: AppBundle\Entity\User\User
+    
+    access_control:
+        - { path: ^/auth/$, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/register, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/resetting, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/admin/, role: [ROLE_ADMIN] }
+        - { path: ^/tickets/, role: [ROLE_USER] }

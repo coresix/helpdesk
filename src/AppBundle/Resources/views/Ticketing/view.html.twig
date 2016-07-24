@@ -1,0 +1,165 @@
+{% extends 'AppBundle::layout.html.twig' %}
+
+{% block title %}{{ ticket.subject }} · Helpdesk{% endblock %}
+
+{% block content %}
+    <div class="container m-t-1">
+        <div class="m-b-1">
+            {{ ticket.department.name }} / <a href="{{ path("view_ticket") }}?id={{ ticket.humanid }}">{{ ticket.humanid }}</a>
+        </div>
+        <h2>{{ ticket.subject }}</h2>
+        <hr />
+        <div class="col-md-12 m-b-1">
+           <div class="row">
+               <a href="edit" class="btn btn-secondary"><i class="fa fa-pencil" aria-hidden="true"></i> Edit</a>
+               <a href="#add-reply" class="btn btn-primary-outline"><i class="fa fa-comment" aria-hidden="true"></i> Reply</a>
+               <div class="btn-group" role="group">
+
+                   {% for transition in ticket.status.workflowtransitions %}
+                       {% set link = path('ticket_transition', {'transition': transition.id, 'id': ticket.humanid}) %}
+                       {{ include('AppBundle:Ticketing:workflowTransitionButton.html.twig', {transition: transition, link: link}) }}
+                   {% endfor %}
+
+                   <a href="close?id={{ ticket.department.key }}-{{ ticket.id }}" class="btn btn-danger-outline">Close</a>
+               </div>
+               <hr  class=""/>
+           </div>
+        </div>
+        <div class="col-md-9">
+
+           <div class="row">
+               <div class="col-xs-3"><span class="text-muted">Type</span></div>
+               <div class="col-xs-3"><i class="fa {{ ticket.type.iconclass }}" aria-hidden="true"></i> {{ ticket.type.name }}</div>
+               <div class="col-xs-3"><span class="text-muted">Status</span></div>
+               <div class="col-xs-3">
+                   {{ include('AppBundle:Ticketing:status.html.twig', {status: ticket.status}) }}
+               <small>(<a data-toggle="modal" data-target=".workflow-diagram-modal">view workflow</a>)</small></div>
+           </div>
+
+            <div class="row">
+                <div class="col-xs-3"><span class="text-muted">Priority</span></div>
+                <div class="col-xs-3">{{ ticket.priority }}</div>
+            </div>
+
+            <div class="row">
+                <hr  class="m-b-1"/>
+            </div>
+
+            <div class="row">
+                <div class="card" style="border-color: #f0ad4e">
+                    <div class="card-block">
+                        <h6 class="card-title text-muted">
+                            {{ ticket.createduser.fullname }}
+                            <small class="text-muted">{{ time_diff(ticket.createdTime) }}</small>
+                        </h6>
+                        <p class="card-text">{{ ticket.message | raw}}</p>
+                    </div>
+                </div>
+            </div>
+
+
+            {% for reply in ticket.replies %}
+                <div class="row">
+                    <div class="card">
+                        <div class="card-block">
+                            <h6 class="card-title text-muted">
+                                {{ reply.createduser.fullname }}
+                                <small class="text-muted">{{ time_diff(reply.createdTime) }}</small>
+                            </h6>
+                            <p class="card-text">{{ reply.message | raw }}</p>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+
+            <div class="row">
+                <h3>Submit a reply</h3>
+                <a name="add-reply"></a>
+                <hr />
+
+                <form action="{{ path('ticket_addreply') }}" method="post">
+                    <input type="hidden" name="_csrf_token" value="{{ csrf_token }}" />
+                    <input type="hidden" name="id" value="{{ ticket.humanid }}" />
+                    <div class="form-group">
+                        <textarea class="form-control" name="_message"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <dl>
+                <dt>Assignee:</dt>
+                <dd><em><span class="text-muted">Unassigned</span></em></dd>
+            </dl>
+
+            <dl>
+                <dt>Reporter:</dt>
+                <dd>{{ ticket.createduser.fullname }}</dd>
+            </dl>
+            <hr />
+            <dl>
+                <dt>Due:</dt>
+                <dd><em><span class="text-muted">Not set</span></em></dd>
+            </dl>
+            <dl>
+                <dt>Created:</dt>
+                <dd>{{ ticket.createdTime|date("d M Y") }}</dd>
+            </dl>
+            <dl>
+                <dt></dt>
+                <dd></dd>
+            </dl>
+        </div>
+    </div>
+
+
+    <div class="modal fade workflow-diagram-modal" tabindex="-1" role="dialog" aria-labelledby="workflow-diagram-modal" aria-hidden="true">
+        <div class="modal-dialog modal-md">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title" id="myModalLabel">Workflow</h4>
+                </div>
+                <div class="modal-body">
+                    <script type="text/javascript" src="/assets/raphael/raphael.js"></script>
+                    <style type="text/css">
+                        #canvas_container text {
+                            font-size: 11px !important;
+                            font-weight: 700;
+                            text-transform: uppercase;
+                        }
+                    </style>
+
+                    <div id="canvas_container" class="container" style="width: 500px"></div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        window.onload = function() {
+            var paper = Raphael(document.getElementById('canvas_container'), 500, 500);
+
+            (paper.rect(180, 100, 115, 30, 3)).attr({fill: '#4a6785', stroke: 'none', 'stroke-width': 0});
+            (paper.rect(180, 176, 115, 30, 3)).attr({fill: '#ffd351', stroke: 'none', 'stroke-width': 0});
+            (paper.rect(180, 250, 115, 30, 3)).attr({fill: '#14892c', stroke: 'none', 'stroke-width': 0});
+
+            paper.text(237.5, 59, "New").attr({"fill": "white"});
+            paper.text(237.5, 98, "In Progress").attr({"fill": "#594300"});
+            paper.text(237.5, 134, "Resolved").attr({"fill": "white"});
+
+            (paper.path("M237.5,135 L237.5,170")).attr({'arrow-end': 'classic-wide-long', stroke:'#bbb',"stroke-width":2});
+            (paper.path("M237.5,210 L237.5,245")).attr({'arrow-end': 'classic-wide-long', stroke:'#bbb',"stroke-width":2});
+
+        }
+    </script>
+{% endblock %}
