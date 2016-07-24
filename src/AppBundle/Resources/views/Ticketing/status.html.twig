@@ -1,0 +1,7 @@
+{% if status.category == 'to_do' %}
+    <span class="label label-primary">{{ status.name }}</span>
+{% elseif  status.category == 'in_progress' %}
+    <span class="label label-warning">{{ status.name }}</span>
+{% elseif  status.category == 'done' %}
+    <span class="label label-success">{{ status.name }}</span>
+{% endif %}

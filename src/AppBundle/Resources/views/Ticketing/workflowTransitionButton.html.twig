@@ -1,0 +1,16 @@
+{% if transition.toTicketStatus.category == 'to_do' %}
+    <a href="{{ link }}"
+       class="btn btn-primary-outline">
+        {{ transition.description }}
+    </a>
+{% elseif  transition.toTicketStatus.category == 'in_progress' %}
+    <a href="{{ link }}"
+       class="btn btn-warning-outline">
+        {{ transition.description }}
+    </a>
+{% elseif  transition.toTicketStatus.category == 'done' %}
+    <a href="{{ link }}"
+       class="btn btn-success-outline">
+        {{ transition.description }}
+    </a>
+{% endif %}

@@ -1,0 +1,21 @@
+{% extends "AppBundle::layout.html.twig" %}
+{% block title %}Register · Helpdesk{% endblock %}
+{% form_theme form 'AppBundle::bootstrap_4_horizontal_layout.html.twig' %}
+
+{% block content %}
+
+    <div class="jumbotron jumbotron-fluid" style="height: 100vh;">
+        <div class="container">
+            <h1 class="display-3">Register your account</h1>
+            <hr class="m-y-2">
+            {{ form_start(form, {'method': 'post', 'action': path('auth_register'), 'attr': {'class': 'register'}}) }}
+            {{ form_widget(form) }}
+            <div class="form-group row">
+                <div class="col-sm-offset-2 col-sm-10">
+                    <button type="submit" class="btn btn-primary">Register</button>
+                </div>
+            </div>
+            {{ form_end(form) }}
+        </div>
+    </div>
+{% endblock content %}

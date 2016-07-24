@@ -1,0 +1,23 @@
+{% extends 'AppBundle::layout.html.twig' %}
+
+{% block title %}Create a new ticket · Helpdesk{% endblock %}
+
+{% block content %}
+<div class="container m-t-1">
+    <div class="row">
+
+        <h1>Create a new ticket</h1>
+        <p class="lead">Select a department</p>
+        <hr />
+
+        <div class="list-group">
+        {% for department in departments %}
+            <a href="{{ path("new_ticket") }}?_department={{ department.id }}" class="list-group-item">
+                <span class=" pull-xs-right"><i class="fa fa-arrow-right" aria-hidden="true"></i></span>
+                <strong>{{ department.name }}</strong>
+            </a>
+        {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}
