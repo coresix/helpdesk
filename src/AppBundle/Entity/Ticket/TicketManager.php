@@ -8,7 +8,7 @@ use AppBundle\Entity\TicketType\TicketType;
 use AppBundle\Entity\User\User;
 use AppBundle\Entity\User\UserRepository;
 use AppBundle\Event\Ticketing\CreatedUpdatedEvent;
-use AppBundle\Utils\HumanIdHelper;
+use AppBundle\Utils\HumanIdResolver;
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
@@ -36,7 +36,7 @@ class TicketManager
     /**
      * Provides helper functions for dealing with human ids.
      *
-     * @var HumanIdHelper
+     * @var HumanIdResolver
      */
     protected $humanIdHelper;
 
@@ -50,7 +50,7 @@ class TicketManager
     public function __construct(
         EventDispatcherInterface $dispatcher,
         EntityManager $em,
-        HumanIdHelper $humanIdHelper,
+        HumanIdResolver $humanIdHelper,
         $class
     )
     {

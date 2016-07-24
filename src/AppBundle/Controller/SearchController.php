@@ -4,7 +4,7 @@ namespace AppBundle\Controller;
 
 
 use AppBundle\Entity\Ticket\Ticket;
-use AppBundle\Utils\HumanIdHelper;
+use AppBundle\Utils\HumanIdResolver;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -36,7 +36,7 @@ class SearchController extends Controller
      */
     protected function redirectViewHumanIdEntity($value)
     {
-        /** @var HumanIdHelper $humanIdHelper */
+        /** @var HumanIdResolver $humanIdHelper */
         $humanIdHelper = $this->get('app.utils.human_id_helper');
 
         if ($humanIdHelper->isValidHumanId($value)) {
