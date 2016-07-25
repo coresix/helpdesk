@@ -29,4 +29,12 @@ class TicketHumanIdProvider implements EntityHumanIdProvider
     {
         return Ticket::HUMAN_ID_PREFIX;
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getEntityIdentityField()
+    {
+        return 'id';
+    }
 }

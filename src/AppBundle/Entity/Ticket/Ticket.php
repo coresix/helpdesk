@@ -3,7 +3,7 @@
 namespace AppBundle\Entity\Ticket;
 
 use AppBundle\Entity\Department\Department;
-use AppBundle\Entity\HumanIdEntity;
+use AppBundle\HumanId\HumanIdEntity;
 use AppBundle\Entity\TicketReply\TicketReply;
 use AppBundle\Entity\TicketStatus\TicketStatus;
 use AppBundle\Entity\TicketType\TicketType;
@@ -19,6 +19,7 @@ use Doctrine\ORM\Mapping as ORM;
  *     @ORM\Index(name="department_idx", columns={"department_id"}),
  *     @ORM\Index(name="status_idx", columns={"ticketstatus_id"})
  * })
+ * @ORM\Entity(repositoryClass="AppBundle\Entity\Ticket\TicketRepository")
  */
 class Ticket implements HumanIdEntity
 {

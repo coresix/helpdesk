@@ -30,4 +30,12 @@ class UserHumanIdProvider implements EntityHumanIdProvider
     {
         return User::HUMAN_ID_PREFIX;
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getEntityIdentityField()
+    {
+        return 'id';
+    }
 }

@@ -20,4 +20,10 @@ interface EntityHumanIdProvider
      * @return bool
      */
     public function getPrefix();
+
+
+    /**
+     * @return string
+     */
+    public function getEntityIdentityField();
 }
