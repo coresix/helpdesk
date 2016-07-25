@@ -14,6 +14,11 @@ class RoleRepository extends EntityRepository
      */
     public function findAll()
     {
-        return parent::findAll();
+        return $this->createQueryBuilder('r')
+            ->select('r')
+            ->getQuery()
+            ->useResultCache(true)
+            ->setResultCacheLifetime(120)
+            ->getResult();
     }
 }

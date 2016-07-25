@@ -1,15 +1,10 @@
 <?php
 
-namespace AppBundle\Entity;
+namespace AppBundle\HumanId;
 
 
 interface HumanIdEntity
 {
-    /**
-     * @return int
-     */
-    public function getId();
-
     /**
      * Returns a human identifier for the entity.
      * 

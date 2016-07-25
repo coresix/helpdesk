@@ -6,9 +6,8 @@ use AppBundle\Entity\Department\Department;
 use AppBundle\Entity\TicketStatus\TicketStatus;
 use AppBundle\Entity\TicketType\TicketType;
 use AppBundle\Entity\User\User;
-use AppBundle\Entity\User\UserRepository;
 use AppBundle\Event\Ticketing\CreatedUpdatedEvent;
-use AppBundle\Utils\HumanIdResolver;
+use AppBundle\HumanId\HumanIdResolver;
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
@@ -28,7 +27,7 @@ class TicketManager
     /**
      * Entity-specific repository
      *
-     * @var UserRepository
+     * @var TicketRepository
      */
     protected $repo;
 
@@ -58,7 +57,7 @@ class TicketManager
         $this->em               = $em;
         $this->humanIdHelper    = $humanIdHelper;
         $this->class            = $class;
-        $this->repo             = $em->getRepository($class);
+        $this->repo             = $em->getRepository($this->class);
     }
 
     /**
@@ -131,5 +130,17 @@ class TicketManager
         $id = $this->humanIdHelper->getEntityIdFromHumanId($humanId);
 
         return $this->repo->find($id);
+    }
+
+    /**
+     * @param array $criteria
+     * @param array|null $orderBy
+     * @param null $limit
+     * @param null $offset
+     * @return array
+     */
+    public function find(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+    {
+        return $this->repo->findBy($criteria, $orderBy, $limit, $offset);
     }
 }

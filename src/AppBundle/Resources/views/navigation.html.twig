@@ -16,6 +16,11 @@
         <li class="nav-item">
             <a class="nav-link" href="/tickets/new">News</a>
         </li>
+        {% if is_granted('ROLE_ADMIN') %}
+            <li class="nav-item">
+                <a class="nav-link" href="{{ path('admin_homepage') }}">Admin</a>
+            </li>
+        {% endif %}
         <li class="nav-item">
             <a class="btn btn-primary-outline" href="/tickets/new">New Ticket</a>
         </li>
