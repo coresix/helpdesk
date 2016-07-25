@@ -1,0 +1,58 @@
+{% extends 'AppBundle::layout.html.twig' %}
+
+{% block title %}Admin · Helpdesk{% endblock %}
+
+{% block content %}
+    <div class="jumbotron jumbotron-fluid" style="background: #005ea5; color: #ffffff;">
+        <div class="container">
+            <h1 class="display-3">Welcome, {{ app.user.fullname }}</h1>
+            <p class="lead">Motd...</p>
+            <p>You have <strong>{{ userAssignedCount }}</strong> open tickets. There are <strong>{{ unassignedCount }}</strong> unassigned tickets.</p>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card">
+            <h3 class="card-header">Ticket</h3>
+            <div class="card-block">
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+
+        <div class="card">
+            <h3 class="card-header">Tickets</h3>
+            <div class="card-block">
+                <h3>Unassigned</h3>
+                {% if unassigned|length > 0 %}
+                    <table class="table table-sm">
+                        <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Subject</th>
+                            <th>Status</th>
+                            <th>Reporter</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for ticket in unassigned %}
+                            <tr>
+                                <td scope="row">{{ ticket.humanid }}</td>
+                                <td>{{ ticket.subject }}</td>
+                                <td>{{ include('AppBundle:Ticketing:status.html.twig', {status: ticket.status}) }}</td>
+                                <td>{{ ticket.createdUser.fullname }}</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card">
+            <h3 class="card-header">Ticket Status Overview</h3>
+            <div class="card-block">
+            </div>
+        </div>
+    </div>
+{% endblock %}

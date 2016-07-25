@@ -1,10 +1,9 @@
 <?php
 
-namespace AppBundle\Utils;
+namespace AppBundle\HumanId;
 
 use AppBundle\Entity\Ticket\TicketHumanIdProvider;
 use AppBundle\Entity\User\UserHumanIdProvider;
-use AppBundle\HumanId\EntityHumanIdProvider;
 use Doctrine\ORM\EntityManager;
 
 class HumanIdResolver

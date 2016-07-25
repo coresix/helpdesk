@@ -2,7 +2,7 @@
 
 namespace AppBundle\Entity\User;
 
-use AppBundle\Entity\HumanIdEntity;
+use AppBundle\HumanId\HumanIdEntity;
 use AppBundle\Entity\Role\Role;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;

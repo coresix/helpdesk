@@ -4,7 +4,7 @@ namespace AppBundle\Controller;
 
 
 use AppBundle\Entity\Ticket\Ticket;
-use AppBundle\Utils\HumanIdResolver;
+use AppBundle\HumanId\HumanIdResolver;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
