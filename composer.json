@@ -1,6 +1,6 @@
 {
-    "name": "shamil/helpdesk1",
-    "license": "proprietary",
+    "name": "coresix/helpdesk",
+    "license": "Apache-2.0",
     "type": "project",
     "autoload": {
         "psr-4": {
