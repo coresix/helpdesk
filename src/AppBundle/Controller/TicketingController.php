@@ -105,7 +105,7 @@ class TicketingController extends Controller
 
         $ticket = $manager->findByHumanId($request->get('id'));
 
-        if (!$ticket) {
+        if (!$ticket || $ticket->getHumanId() !== $request->get('id')) {
             return $this->createNotFoundException();
         }
 
