@@ -137,7 +137,7 @@ class TicketManager
      * @param array|null $orderBy
      * @param null $limit
      * @param null $offset
-     * @return array
+     * @return Ticket[]
      */
     public function find(array $criteria, array $orderBy = null, $limit = null, $offset = null)
     {

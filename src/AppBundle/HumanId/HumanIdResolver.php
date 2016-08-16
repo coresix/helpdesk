@@ -4,6 +4,8 @@ namespace AppBundle\HumanId;
 
 use AppBundle\Entity\Ticket\TicketHumanIdProvider;
 use AppBundle\Entity\User\UserHumanIdProvider;
+use AppBundle\HumanId\Exception\InvalidHumanId;
+use AppBundle\HumanId\Exception\NoProvider;
 use Doctrine\ORM\EntityManager;
 
 class HumanIdResolver
@@ -11,7 +13,7 @@ class HumanIdResolver
     const HUMAN_ID_REGEXP = '/^([A-Za-z]{3})\-([A-Za-z]{3})?\-([0-9]{1,9})$/';
 
     /** @var EntityHumanIdProvider[] */
-    protected $entityMap = [];
+    protected $providers = [];
 
     /**
      * HumanIdHelper constructor.
@@ -54,15 +56,24 @@ class HumanIdResolver
      *
      * @param EntityManager $em
      * @param $humanId
-     * @return null|object
+     * @return HumanIdEntity
      */
     public function getEntityFromHumanId(EntityManager $em, $humanId)
     {
+        if (!$this->isValidHumanId($humanId)){
+            throw new InvalidHumanId(sprintf(
+                "'%s' is not a valid human id",
+                $humanId
+            ));
+        }
+
         $entity = $this->getEntityTypeFromHumanId($humanId);
         $id = $this->getEntityIdFromHumanId($humanId);
+        $provider = $this->getProviderForHumanId($humanId);
 
-        return $em->getRepository($entity)->find($id);
+        return $em->getRepository($entity)->findOneBy([$provider->getEntityIdentityField() => $id]);
     }
+
 
     /**
      * Returns whether a human id is valid.
@@ -72,7 +83,7 @@ class HumanIdResolver
      */
     public function isValidHumanId($humanId)
     {
-        preg_match(self::HUMAN_ID_REGEXP, $humanId, $matches);
+        preg_match(static::HUMAN_ID_REGEXP, $humanId, $matches);
 
         return count($matches) === 4;
     }
@@ -80,21 +91,33 @@ class HumanIdResolver
     /**
      * @param $humanId
      * @return EntityHumanIdProvider|null
+     * @throws NoProvider
      */
     public function getProviderForHumanId($humanId)
     {
+        if (!$this->isValidHumanId($humanId)){
+            throw new InvalidHumanId(sprintf(
+                "'%s' is not a valid human id",
+                $humanId
+            ));
+        }
+
         $items = explode('-', $humanId);
 
-        if(isset($this->entityMap[$items[0]])){
-            return $this->entityMap[$items[0]];
+        if(isset($this->providers[$items[0]])){
+            return $this->providers[$items[0]];
         } else {
-            return null;
+            throw new NoProvider(sprintf(
+                "Human ID '%s' does not have a registered provider",
+                $humanId
+            ));
         }
     }
 
 
     /**
      * Register entity providers.
+     * @todo: move this out of here!
      */
     protected function registerProviders()
     {
@@ -103,10 +126,12 @@ class HumanIdResolver
     }
 
     /**
+     * Registers Entity Providers to the local cache.
+     *
      * @param EntityHumanIdProvider $provider
      */
     protected function registerProvider(EntityHumanIdProvider $provider)
     {
-        $this->entityMap[$provider->getPrefix()] = $provider;
+        $this->providers[$provider->getPrefix()] = $provider;
     }
 }

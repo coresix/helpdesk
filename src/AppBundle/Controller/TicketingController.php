@@ -74,8 +74,7 @@ class TicketingController extends Controller
         /** @var TicketType $type */
         $type = $entityManager->getRepository(TicketType::class)->find(1);
 
-        /** @var TicketManager $manager */
-        $manager = $this->get('app.manager.ticket');
+        $manager = $this->getTicketManager();
 
         $ticket = $manager->createTicket(
             $department,
@@ -100,8 +99,7 @@ class TicketingController extends Controller
      */
     public function viewAction(Request $request)
     {
-        /** @var TicketManager $manager */
-        $manager = $this->get('app.manager.ticket');
+        $manager = $this->getTicketManager();
 
         $ticket = $manager->findByHumanId($request->get('id'));
 
@@ -126,8 +124,7 @@ class TicketingController extends Controller
      */
     public function addReplyAction(Request $request)
     {
-        /** @var TicketManager $ticketManager */
-        $ticketManager = $this->get('app.manager.ticket');
+        $ticketManager = $this->getTicketManager();
         /** @var TicketReplyManager $replyManager */
         $replyManager  = $this->get('app.manager.ticket_reply');
 
@@ -151,8 +148,7 @@ class TicketingController extends Controller
      */
     public function transitionAction(Request $request)
     {
-        /** @var TicketManager $ticketManager */
-        $ticketManager = $this->get('app.manager.ticket');
+        $ticketManager = $this->getTicketManager();
 
         if (($ticket = $ticketManager->findByHumanId($request->get('id'))) === null) {
             return $this->createNotFoundException();
@@ -167,5 +163,13 @@ class TicketingController extends Controller
         $transitionManager->transitionTicket($ticket, $transition, $ticketManager);
 
         return $this->redirect($this->generateUrl('view_ticket', ['id' => $ticket->getHumanId()]));
+    }
+
+    /**
+     * @return TicketManager
+     */
+    private function getTicketManager()
+    {
+        return $this->get('app.manager.ticket');
     }
 }
