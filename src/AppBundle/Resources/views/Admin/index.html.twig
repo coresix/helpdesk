@@ -36,7 +36,7 @@
                         <tbody>
                         {% for ticket in unassigned %}
                             <tr>
-                                <td scope="row">{{ ticket.humanid }}</td>
+                                <td scope="row"><a href="{{ path("admin_view_ticket") }}?id={{ ticket.humanid }}">{{ ticket.humanid }}</a></td>
                                 <td>{{ ticket.subject }}</td>
                                 <td>{{ include('AppBundle:Ticketing:status.html.twig', {status: ticket.status}) }}</td>
                                 <td>{{ ticket.createdUser.fullname }}</td>

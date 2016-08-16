@@ -18,6 +18,6 @@ class UserAssignedToTicket implements VoterInterface
      */
     public function vote(TokenInterface $token, $subject, array $attributes = [])
     {
-        return $token->getUser() === $subject->getAssignee();
+        return ($token->getUser() === $subject->getAssignee()) ? static::ACCESS_GRANTED : static::ACCESS_DENIED;
     }
 }

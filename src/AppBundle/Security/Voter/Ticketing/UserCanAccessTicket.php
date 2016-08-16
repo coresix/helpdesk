@@ -17,6 +17,6 @@ class UserCanAccessTicket implements VoterInterface
      */
     public function vote(TokenInterface $token, $subject, array $attributes = [])
     {
-        return $token->getUser() === $subject->getCreatedUser();
+        return ($token->getUser() === $subject->getCreatedUser()) ? static::ACCESS_GRANTED : static::ACCESS_DENIED;
     }
 }
