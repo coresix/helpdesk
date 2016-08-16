@@ -2,7 +2,6 @@
 
 namespace AppBundle\Controller\Admin;
 
-
 use AppBundle\Entity\Ticket\TicketManager;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
