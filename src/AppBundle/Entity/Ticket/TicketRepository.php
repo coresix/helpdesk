@@ -10,6 +10,7 @@ class TicketRepository extends EntityRepository
     /**
      * {@inheritdoc}
      *
+     * @param $id
      * @return Ticket
      */
     public function findById($id)
