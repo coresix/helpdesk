@@ -7,7 +7,7 @@ use AppBundle\Entity\TicketStatus\TicketStatus;
 use AppBundle\Entity\TicketType\TicketType;
 use AppBundle\Entity\User\User;
 use AppBundle\Event\Ticketing\CreatedUpdatedEvent;
-use AppBundle\HumanId\HumanIdResolver;
+use AppBundle\ResourceId\ResourceIdResolver;
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
@@ -35,7 +35,7 @@ class TicketManager
     /**
      * Provides helper functions for dealing with human ids.
      *
-     * @var HumanIdResolver
+     * @var ResourceIdResolver
      */
     protected $humanIdHelper;
 
@@ -49,7 +49,7 @@ class TicketManager
     public function __construct(
         EventDispatcherInterface $dispatcher,
         EntityManager $em,
-        HumanIdResolver $humanIdHelper,
+        ResourceIdResolver $humanIdHelper,
         $class
     )
     {
@@ -123,11 +123,11 @@ class TicketManager
      */
     public function findByHumanId($humanId)
     {
-        if ($this->humanIdHelper->getEntityTypeFromHumanId($humanId) !== $this->class) {
+        if ($this->humanIdHelper->getEntityTypeFromResourceId($humanId) !== $this->class) {
             throw new \InvalidArgumentException();
         }
 
-        $id = $this->humanIdHelper->getEntityIdFromHumanId($humanId);
+        $id = $this->humanIdHelper->getEntityIdFromResourceId($humanId);
 
         return $this->repo->find($id);
     }

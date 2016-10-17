@@ -3,9 +3,9 @@
 namespace AppBundle\Entity\User;
 
 
-use AppBundle\HumanId\EntityHumanIdProvider;
+use AppBundle\ResourceId\EntityResourceProvider;
 
-class UserHumanIdProvider implements EntityHumanIdProvider
+class UserResourceIdProvider implements EntityResourceProvider
 {
     /**
      * {@inheritdoc}

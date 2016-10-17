@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\HumanId;
+namespace AppBundle\ResourceId;
 
 
-interface EntityHumanIdProvider
+interface EntityResourceProvider
 {
 
     /**
@@ -20,7 +20,6 @@ interface EntityHumanIdProvider
      * @return bool
      */
     public function getPrefix();
-
 
     /**
      * @return string

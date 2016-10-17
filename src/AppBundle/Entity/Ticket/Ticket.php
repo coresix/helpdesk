@@ -3,7 +3,7 @@
 namespace AppBundle\Entity\Ticket;
 
 use AppBundle\Entity\Department\Department;
-use AppBundle\HumanId\HumanIdEntity;
+use AppBundle\ResourceId\ResourceIdEntity;
 use AppBundle\Entity\TicketReply\TicketReply;
 use AppBundle\Entity\TicketStatus\TicketStatus;
 use AppBundle\Entity\TicketType\TicketType;
@@ -21,7 +21,7 @@ use Doctrine\ORM\Mapping as ORM;
  * })
  * @ORM\Entity(repositoryClass="AppBundle\Entity\Ticket\TicketRepository")
  */
-class Ticket implements HumanIdEntity
+class Ticket implements ResourceIdEntity
 {
     const HUMAN_ID_PREFIX = 'TKT';
 
@@ -355,7 +355,7 @@ class Ticket implements HumanIdEntity
     /**
      * {@inheritdoc}
      */
-    public function getHumanId()
+    public function getResourceId()
     {
         return sprintf('%s-%s-%d',
             self::HUMAN_ID_PREFIX,
