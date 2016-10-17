@@ -4,7 +4,7 @@ namespace AppBundle\Controller;
 
 
 use AppBundle\Entity\Ticket\Ticket;
-use AppBundle\HumanId\HumanIdResolver;
+use AppBundle\ResourceId\ResourceIdResolver;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -36,11 +36,11 @@ class SearchController extends Controller
      */
     protected function redirectViewHumanIdEntity($value)
     {
-        /** @var HumanIdResolver $humanIdHelper */
+        /** @var ResourceIdResolver $humanIdHelper */
         $humanIdHelper = $this->get('app.utils.human_id_helper');
 
-        if ($humanIdHelper->isValidHumanId($value)) {
-            switch ($humanIdHelper->getEntityTypeFromHumanId($value)){
+        if ($humanIdHelper->isValidResourceId($value)) {
+            switch ($humanIdHelper->getEntityTypeFromResourceId($value)){
                 case Ticket::class:
                     return $this->redirectToRoute('view_ticket', ['id' => $value]);
 

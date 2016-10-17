@@ -27,7 +27,7 @@ class TicketingController extends Controller
 
         $ticket = $manager->findByHumanId($request->get('id'));
 
-        if (!$ticket || $ticket->getHumanId() !== $request->get('id')) {
+        if (!$ticket || $ticket->getResourceId() !== $request->get('id')) {
             return $this->createNotFoundException();
         }
 
@@ -64,7 +64,7 @@ class TicketingController extends Controller
         $reply = $replyManager->createReply($ticket, $this->getUser(), $request->get('_message'));
         $replyManager->addReply($reply);
 
-        return $this->redirect($this->generateUrl('view_ticket', ['id' => $ticket->getHumanId()]));
+        return $this->redirect($this->generateUrl('view_ticket', ['id' => $ticket->getResourceId()]));
     }
 
     /**
@@ -88,6 +88,6 @@ class TicketingController extends Controller
 
         $transitionManager->transitionTicket($ticket, $transition, $ticketManager);
 
-        return $this->redirect($this->generateUrl('view_ticket', ['id' => $ticket->getHumanId()]));
+        return $this->redirect($this->generateUrl('view_ticket', ['id' => $ticket->getResourceId()]));
     }
 }

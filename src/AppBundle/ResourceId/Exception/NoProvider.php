@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\HumanId\Exception;
+namespace AppBundle\ResourceId\Exception;
 
 
 class NoProvider extends \Exception

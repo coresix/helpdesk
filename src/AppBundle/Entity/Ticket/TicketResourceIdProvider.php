@@ -2,9 +2,9 @@
 namespace AppBundle\Entity\Ticket;
 
 
-use AppBundle\HumanId\EntityHumanIdProvider;
+use AppBundle\ResourceId\EntityResourceProvider;
 
-class TicketHumanIdProvider implements EntityHumanIdProvider
+class TicketResourceIdProvider implements EntityResourceProvider
 {
     /**
      * {@inheritdoc}

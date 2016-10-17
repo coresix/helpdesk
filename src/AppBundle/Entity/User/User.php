@@ -2,7 +2,7 @@
 
 namespace AppBundle\Entity\User;
 
-use AppBundle\HumanId\HumanIdEntity;
+use AppBundle\ResourceId\ResourceIdEntity;
 use AppBundle\Entity\Role\Role;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
@@ -13,7 +13,7 @@ use Symfony\Component\Security\Core\User\AdvancedUserInterface;
  * @ORM\Table(name="users")
  * @ORM\Entity(repositoryClass="AppBundle\Entity\User\UserRepository")
  */
-class User implements AdvancedUserInterface, \Serializable, HumanIdEntity
+class User implements AdvancedUserInterface, \Serializable, ResourceIdEntity
 {
     const HUMAN_ID_PREFIX = 'USR';
     const ROLE_DEFAULT = 'ROLE_USER';
@@ -263,7 +263,7 @@ class User implements AdvancedUserInterface, \Serializable, HumanIdEntity
     /**
      * {@inheritdoc}
      */
-    public function getHumanId()
+    public function getResourceId()
     {
         return sprintf('%s-SYS-%d',
             self::HUMAN_ID_PREFIX,
